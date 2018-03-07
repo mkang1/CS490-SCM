@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Supply Chain Management Downstream system">
+    <meta name="author" content="Group 10">
+
+    <title>SCM Downstream System</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        Activities:
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+				<li>
+                    <a href="inventory.html">Inventory</a>
+                </li>
+                <li>
+                    <a href="currOrders.html">Current Orders</a>
+                </li>
+                <li>
+                    <a href="finishedOrders.html">Finished Orders</a>
+                </li>
+                <li>
+                    <a href="returns.html">Returns</a>
+                </li>
+                <li>
+                    <a href="recycling.html">Recycling</a>
+                </li>
+                <li>
+                    <a href="support.html">Support</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container">
+				<div class="row">
+					<div class="col-sm-1">
+						<a href="#menu-toggle"  class="btn" id="menu-toggle">&#9776</a>
+					</div>
+					<div class="col-sm-10">
+						<h1>Current Orders</h1>
+					</div>
+				</div>	
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	<div class="container">
+		<p>All the orders requested to Recreation USA can be found in the table below. Filter the table to get more specific data displayed.</p>            
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>OrderID</th>
+					<th>From</th>
+					<th>Destination</th>
+					<th>Estimataded arrival</th>
+					<th>Status</th>
+					<th>Transporter</th>
+				</tr>
+			</thead>
+			<tbody id="deliveryList">
+			</tbody>
+		</table>
+	</div>
+	
+	<script src="jquery-3.3.1.min.js"></script>
+	<script src="main.js"></script>
+	
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
