@@ -3,7 +3,7 @@ var port = process.env.PORT || 3000,
     express = require('express'),
     bodyParser = require('body-parser'),
     fs = require('fs'),
-    html = fs.readFileSync('index.html'),
+    // html = fs.readFileSync('index.html'),
     app = express(),
     db=require('./dbconnect');
 
@@ -15,11 +15,12 @@ app.use(bodyParser.urlencoded({
 
 app.set('view engine', 'pug');
 
-db.connect()
+db.connect();
 
+app.use(express.static('views'));
 // default route
 app.get('/', function(req, res) {
-    res.sendfile(__dirname + '/index.html');
+    res.sendFile('views/index.html' , { root : __dirname});
 });
 
 app.get('/product', function (req, res) {
