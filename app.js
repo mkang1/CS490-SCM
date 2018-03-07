@@ -67,6 +67,15 @@ app.get('/support', function(req, res){
     res.render('support');
 })
 
+app.get('/query', function (req, res) {
+    db.query('select * from Product', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        return res.send(results);
+    });
+});
+
 // app.get('/product/:serial', function (req, res) {
 //     var serial = req.params.serial;
     
