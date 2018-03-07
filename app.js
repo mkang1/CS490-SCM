@@ -48,6 +48,106 @@ router.get('/inventory', function (req, res) {
     });
 });
 
+router.get('/view1', function(req, res){
+    var productList = [];
+    db.query('select * from Product where Spoof=1', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                // Create an object to save current row's data
+                var product = {
+                    'Serial':results[i].Serial,
+                    'Model':results[i].Model,
+                    'CurLocation':results[i].CurLocation
+                }
+                // Add object into array
+                productList.push(product);
+            }
+        return res.render('view1', {"productList": productList}); 
+        }
+        // return res.send(results);
+    }); 
+})
+
+router.get('/view1a', function(req, res){
+    var currentList = [];
+    db.query('select * from Shipment WHERE Spoof=1', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                // Create an object to save current row's data
+                var product = {
+                    'Batch':results[i].Batch,
+                    'Serial':results[i].Serial,
+                    'From':results[i].From,
+                    'To':results[i].To,
+                    'ReceiveDt':results[i].ReceiveDt,
+                    'ShipDt':results[i].ShipDt,
+                    'Completed':results[i].Completed
+                }
+                // Add object into array
+                currentList.push(product);
+            }
+        return res.render('view1a', {"currentList": currentList}); 
+        }
+        // return res.send(results);
+    });
+});
+
+router.get('/view2', function(req, res){
+    var productList = [];
+    db.query('select * from Product where Spoof=3', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                // Create an object to save current row's data
+                var product = {
+                    'Serial':results[i].Serial,
+                    'Model':results[i].Model,
+                    'CurLocation':results[i].CurLocation
+                }
+                // Add object into array
+                productList.push(product);
+            }
+        return res.render('view2', {"productList": productList}); 
+        }
+        // return res.send(results);
+    }); 
+})
+
+router.get('/view2a', function(req, res){
+    var currentList = [];
+    db.query('select * from Shipment WHERE Spoof=3', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                // Create an object to save current row's data
+                var product = {
+                    'Batch':results[i].Batch,
+                    'Serial':results[i].Serial,
+                    'From':results[i].From,
+                    'To':results[i].To,
+                    'ReceiveDt':results[i].ReceiveDt,
+                    'ShipDt':results[i].ShipDt,
+                    'Completed':results[i].Completed
+                }
+                // Add object into array
+                currentList.push(product);
+            }
+        return res.render('view2a', {"currentList": currentList}); 
+        }
+        // return res.send(results);
+    });
+});
+
 
 router.get('/inventory/serial', function (req, res) {
     var serial = req.query.serial;
