@@ -1,0 +1,7 @@
+extend layout.pug
+block title 
+	title="Recycling/Disposal"
+block content
+	| Recycle or dispose product id: 
+	input#pid(type="text")
+	button(onclick="kill_product(pid)") Recycle

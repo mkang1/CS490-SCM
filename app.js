@@ -20,8 +20,16 @@ db.connect();
 app.use(express.static('views'));
 // default route
 app.get('/', function(req, res) {
-    res.sendFile('views/index.html' , { root : __dirname});
-});
+     res.render('index'); 
+})
+
+app.get('/recycling', function(req, res){
+    res.render('recycling');
+})
+
+app.get('/return', function(req, res){
+    res.render('return');
+})
 
 app.get('/product', function (req, res) {
     var productList = [];
@@ -75,6 +83,10 @@ app.get('/product/:serial', function (req, res) {
         }
     });
 });
+
+app.get('/exchange', function(req, res) {
+     res.render('exchange'); 
+})
 
 app.get('/shipment', function (req, res) {
     db.query('select * from Shipment', function (error, results, fields) {

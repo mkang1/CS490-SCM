@@ -2,18 +2,11 @@ extends layout.pug
 block title
 	title= 'Product List'
 block content
-	.container
-		.row
-			.col-sm-1
-				a#menu-toggle.btn(href="#menu-toggle") &#9776
-			.col-sm-10
-				h1 Supply Chain Management
-			.col-sm-5
-				h2= 'Product List'
-				table
-					for product in productList
-						tr
-							td= product.Serial
-							td= product.Model
-							td= product.CurLocation
+	h2= 'Product List'
+	table
+		for product in productList
+			tr
+				td= product.Serial
+				td= product.Model
+				td= product.CurLocation
 			

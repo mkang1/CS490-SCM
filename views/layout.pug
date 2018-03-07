@@ -37,7 +37,14 @@ html(lang="en")
             // /#sidebar-wrapper
             // Page Content
             #page-content-wrapper
-            block content
+            .container
+                .row
+                    .col-sm-1
+                        a#menu-toggle.btn(href="#menu-toggle") &#9776
+                    .col-sm-10
+                    h1 Supply Chain Management
+                    .col-sm-5
+                    block content
             // /#page-content-wrapper
         // /#wrapper
         // Bootstrap core JavaScript
