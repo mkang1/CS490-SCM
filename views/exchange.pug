@@ -1,9 +1,11 @@
 extends layout.pug
-
 block title
-    title= 'Exchanges'
+	title= 'Exchanges'
 block content
-    | Exchange product id1 for product id2: 
-    input#pid1(type="text")
-    input#pid2(type="text")
-    button(onclick="exchange_product(pid1, pid2)") Exchange
+	br
+	form(action="/exchange/serial" method="get")
+		| Exchange serial1 for serial2
+		br
+		input(type="text" name="serial1")
+		input(type="text" name="serial2")
+		input(type="submit" value="Exchange")

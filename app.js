@@ -53,8 +53,7 @@ router.get('/inventory/serial', function (req, res) {
     var serial = req.query.serial;
      if (!serial) {
         return res.redirect("/inventory");
-    }
-    
+        }
     db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
         if (error) {
             return res.status(400).send({ error: true, message: 'db error' });
@@ -78,17 +77,123 @@ router.get('/inventory/serial', function (req, res) {
 });
 
 router.get('/current', function(req, res){
-    return res.render('current');
+    var currentList = [];
+    db.query('select * from Shipment', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                // Create an object to save current row's data
+                var product = {
+                    'Batch':results[i].Batch,
+                    'Serial':results[i].Serial,
+                    'From':results[i].From,
+                    'To':results[i].To,
+                    'ReceiveDt':results[i].ReceiveDt,
+                    'ShipDt':results[i].ShipDt,
+                    'Completed':results[i].Completed
+                }
+                // Add object into array
+                currentList.push(product);
+            }
+        return res.render('current', {"currentList": currentList}); 
+        }
+        // return res.send(results);
+    });
 });
 
-router.get('/return', function(req, res){
-    return res.render('return');
+
+router.get('/current/batch', function (req, res) {
+    var currentList = [];
+    var batch = req.query.batch;
+     if (!batch) {
+        return res.redirect("/current");
+        }
+    db.query('SELECT * FROM Shipment where batch=?', batch, function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                var product = {
+                    'Batch':results[i].Batch,
+                    'Serial':results[i].Serial,
+                    'From':results[i].From,
+                    'To':results[i].To,
+                    'ReceiveDt':results[i].ReceiveDt,
+                    'ShipDt':results[i].ShipDt,
+                    'Completed':results[i].Completed
+                }
+                currentList.push(product);
+            
+            }
+            return res.render('current', {"currentList": currentList});
+            // return res.send(results[0]);
+        }
+    });
 });
+router.get('/return', function(req, res){
+    var returnList = [];
+    db.query('select * from Returns', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+                // Create an object to save current row's data
+                var product = {
+                    'ReturnID':results[i].ReturnID,
+                    'Serial':results[i].Serial,
+                    'ReturnLocation':results[i].ReturnLocation
+                }
+                // Add object into array
+                returnList.push(product);
+            }
+        return res.render('return', {"returnList": returnList}); 
+        }
+        // return res.send(results);
+    });
+});
+
+router.get('/return/serial', function(req, res){
+    var serial = req.query.serial;
+    if (!serial) {
+        return res.redirect("/return");
+    }
+    db.query('insert into Returns (Serial, ReturnLocation) values (?, (select CurLocation from Product where Serial = ?))', [serial, serial], function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            return res.redirect("/return");
+        }
+    });
+});
+
 
 router.get('/exchange', function(req, res){
     return res.render('exchange');
 });
 
+router.get('/exchange/serial', function(req, res){
+    var serial1 = req.query.serial1;
+    var serial2 = req.query.serial2;
+    if (!serial1) {
+        return res.redirect("/exchange");
+    }
+    if (!serial2) {
+        return res.redirect("/exchange");
+    }
+    db.query('insert into Returns (Serial, ReturnLocation) values (?, (select CurLocation from Product where Serial = ?)); update Product set CurLocation = "SOLD" where Serial = ?', [serial1, serial1, serial2], function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            return res.redirect("/exchange");
+        }
+    });
+});
 router.get('/recycling', function(req, res){
     return res.render('recycling');
 });
@@ -97,51 +202,9 @@ router.get('/support', function(req, res){
     return res.render('support');
 });
 
-app.get('/query', function (req, res) {
-    db.query('select * from Product', function (error, results, fields) {
-        if (error) {
-            return res.status(400).send({ error: true, message: 'db error' });
-        }
-        return res.send(results);
-    });
+router.get('/manual', function(req, res) {
+    return res.render('manual');
 });
-
-// app.get('/product/:serial', function (req, res) {
-//     var serial = req.params.serial;
-    
-//     if (!serial) {
-//         return res.status(400).send({ error: true, message: 'Please provide Serial' });
-//     }
-    
-//     db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
-//         if (error) {
-//             return res.status(400).send({ error: true, message: 'db error' });
-//         }
-//         else {
-//             if (results.length == 1) {
-//                 var product = {
-//                     'Serial':results[0].Serial,
-//                     'Model':results[0].Model,
-//                     'CurLocation':results[0].CurLocation
-//                 }
-//             res.render('productSerial', {"product": product});
-//             }
-//             else {
-//                 return res.status(400).send({ error: true, message: 'not found' });
-//             }
-            
-//             // return res.send(results[0]);
-//         }
-//     });
-// });
-
-router.get('/shipment', function (req, res) {
-    db.query('select * from Shipment', function (error, results, fields) {
-        if (error) throw error;
-        return res.send(results);
-    });
-});
-
 app.use('/', router);
 
 // port must be set to 8080 because incoming http requests are routed from port 80 to port 8080

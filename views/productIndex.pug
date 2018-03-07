@@ -4,11 +4,15 @@ block title
 block content
 	h2= 'Product List'
 	table
+		td= "Serial"
+		td= "Model"
+		td= "Current Location"
 		for product in productList
 			tr
 				td= product.Serial
 				td= product.Model
 				td= product.CurLocation
+	br
 	form(action="/inventory/serial" method="get")
 		| Serial search: 
 		input(type="text" name="serial")

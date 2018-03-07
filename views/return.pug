@@ -2,6 +2,17 @@ extend layout.pug
 block title 
 	title="Returns"
 block content
-	| Return product by id
-	input#pid(type="text")
-	button(onclick="return_product(pid)") Return
+	table
+		td= "Return ID"
+		td= "Serial"
+		td= "Return Location"
+		for product in returnList
+			tr
+				td= product.ReturnID
+				td= product.Serial
+				td= product.ReturnLocation
+	br
+	form(action="/return/serial" method="get")
+		| Return product by serial: 
+		input(type="text" name="serial")
+		input(type="submit" value="Return")

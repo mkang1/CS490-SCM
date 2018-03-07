@@ -1,0 +1,16 @@
+extend layout.pug
+block title 
+	title="Manual Requests"
+block content
+	form(action="/manual/request" method="put")
+		| Submit a manual request
+		br
+		| Quantity 
+		input(type="text" name="qty")
+		br
+		| Delivery Location 
+		input(type="text" name="location")
+		br
+		| Model 
+		input(type="text" name="model")
+		input(type="submit" value="Submit")

@@ -4,7 +4,8 @@ var connection = mysql.createConnection({
   user     : 'cs490',
   password : 'mypassword',
   database : 'SCM',
-  port	   : '3306'
+  port	   : '3306',
+  multipleStatements: true
 });
 
 module.exports=connection;

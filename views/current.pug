@@ -1,4 +1,27 @@
 extends layout.pug
-
 block title
-    title= 'Outgoing shipments'
+	title= 'Outgoing shipments'
+block content
+	h2= 'Shipments'
+	table
+		td= "Batch"
+		td= "Serial"
+		td= "From"
+		td= "To"
+		td= "ReceiveDt"
+		td= "ShipDt"
+		td= "Completed"
+		for product in currentList
+			tr
+				td= product.Batch
+				td= product.Serial
+				td= product.From
+				td= product.To
+				td= product.ReceiveDt
+				td= product.ShipDt
+				td= product.Completed
+	br
+	form(action="/current/batch" method="get")
+		| Batch search: 
+		input(type="text" name="batch")
+		input(type="submit" value="Submit")
