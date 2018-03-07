@@ -22,15 +22,11 @@ var router = express.Router();
 app.use(express.static('views'));
 // default route
 router.get('/', function(req, res) {
-    res.sendFile('views/index.html' , { root : __dirname});
+    return res.render('index');
 });
 
-router.get('/inventory.html', function (req, res) {
+router.get('/inventory', function (req, res) {
     var productList = [];
-    var test = req.query.serial;
-    if (typeof test !== 'undefined') {
-        res.redirect("/inventory.html/" + test);
-    }
     db.query('select * from Product', function (error, results, fields) {
         if (error) {
             return res.status(400).send({ error: true, message: 'db error' });
@@ -46,75 +42,67 @@ router.get('/inventory.html', function (req, res) {
                 // Add object into array
                 productList.push(product);
             }
-        res.render('productIndex', {"productList": productList}); 
+        return res.render('productIndex', {"productList": productList}); 
         }
         // return res.send(results);
     });
 });
 
 
-router.get('/inventory.html/:serial', function (req, res) {
-    var serial = req.params.serial;
+router.get('/inventory/serial', function (req, res) {
+    var serial = req.query.serial;
+     if (!serial) {
+        return res.redirect("/inventory");
+    }
+    
+    db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            if (results.length == 1) {
+                var product = {
+                    'Serial':results[0].Serial,
+                    'Model':results[0].Model,
+                    'CurLocation':results[0].CurLocation
+                }
+            return res.render('productSerial', {"product": product});
+            }
+            else {
+                return res.status(400).send({ error: true, message: 'not found' });
+            }
+            
+            // return res.send(results[0]);
+        }
+    });
+});
 
 router.get('/current', function(req, res){
-    res.render('current');
-})
+    return res.render('current');
+});
 
 router.get('/return', function(req, res){
-    res.render('return');
-})
+    return res.render('return');
+});
 
 router.get('/exchange', function(req, res){
-    res.render('exchange');
-})
+    return res.render('exchange');
+});
 
 router.get('/recycling', function(req, res){
-    res.render('recycling');
-})
+    return res.render('recycling');
+});
 
 router.get('/support', function(req, res){
-    res.render('support');
-})
-
-// app.get('/product/:serial', function (req, res) {
-//     var serial = req.params.serial;
-    
-//     if (!serial) {
-//         return res.status(400).send({ error: true, message: 'Please provide Serial' });
-//     }
-    
-//     db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
-//         if (error) {
-//             return res.status(400).send({ error: true, message: 'db error' });
-//         }
-//         else {
-//             if (results.length == 1) {
-//                 var product = {
-//                     'Serial':results[0].Serial,
-//                     'Model':results[0].Model,
-//                     'CurLocation':results[0].CurLocation
-//                 }
-//             res.render('productSerial', {"product": product});
-//             }
-//             else {
-//                 return res.status(400).send({ error: true, message: 'not found' });
-//             }
-            
-//             // return res.send(results[0]);
-//         }
-//     });
-// });
-
+    return res.render('support');
+});
 
 router.get('/shipment', function (req, res) {
-
-/*app.get('/shipment', function (req, res) {
->>>>>>> 5895e9133a09e6227dbd9a254befd12074ad7591
     db.query('select * from Shipment', function (error, results, fields) {
         if (error) throw error;
         return res.send(results);
     });
-});*/
+});
 
 app.use('/', router);
 

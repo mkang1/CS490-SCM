@@ -9,7 +9,7 @@ block content
 				td= product.Serial
 				td= product.Model
 				td= product.CurLocation
-	form(action="/inventory.html" method="get")
-						| Serial search: 
-						input(type="text" name="serial")
-						input(type="submit" value="Submit")
+	form(action="/inventory/serial" method="get")
+		| Serial search: 
+		input(type="text" name="serial")
+		input(type="submit" value="Submit")
