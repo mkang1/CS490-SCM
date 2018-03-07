@@ -3,7 +3,7 @@ var connection = mysql.createConnection({
   host     : 'aazoxufsbhlrky.cnafio4xiyic.us-east-2.rds.amazonaws.com',
   user     : 'cs490',
   password : 'mypassword',
-  database : 'thisWorks',
+  database : 'SCM',
   port	   : '3306'
 });
 

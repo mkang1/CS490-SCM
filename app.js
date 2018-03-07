@@ -13,6 +13,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.set('view engine', 'pug');
+
 db.connect()
 
 // default route
@@ -20,25 +22,66 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-app.get('/all', function (req, res) {
-    db.query('select * from TestData', function (error, results, fields) {
+app.get('/product', function (req, res) {
+    var productList = [];
+    db.query('select * from Product', function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            for (var i = 0; i < results.length; i++) {
+
+                // Create an object to save current row's data
+                var product = {
+                    'Serial':results[i].Serial,
+                    'Model':results[i].Model,
+                    'CurLocation':results[i].CurLocation
+                }
+                // Add object into array
+                productList.push(product);
+            }
+        res.render('productIndex', {"productList": productList}); 
+        }
+        // return res.send(results);
+    });
+});
+
+app.get('/product/:serial', function (req, res) {
+    var serial = req.params.serial;
+    
+    if (!serial) {
+        return res.status(400).send({ error: true, message: 'Please provide Serial' });
+    }
+    
+    db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            if (results.length == 1) {
+                var product = {
+                    'Serial':results[0].Serial,
+                    'Model':results[0].Model,
+                    'CurLocation':results[0].CurLocation
+                }
+            res.render('productSerial', {"product": product});
+            }
+            else {
+                return res.status(400).send({ error: true, message: 'not found' });
+            }
+            
+            // return res.send(results[0]);
+        }
+    });
+});
+
+app.get('/shipment', function (req, res) {
+    db.query('select * from Shipment', function (error, results, fields) {
         if (error) throw error;
         return res.send(results);
     });
 });
 
-app.get('/all/:policyID', function (req, res) {
-    let policy_id = req.params.policyID;
- 
-    if (!policy_id) {
-        return res.status(400).send({ error: true, message: 'Please provide policyID' });
-    }
-    
-    db.query('SELECT * FROM TestData where policyID=?', policy_id, function (error, results, fields) {
-        if (error) throw error;
-        return res.send(results[0]);
-    });
-});
 
 // port must be set to 8080 because incoming http requests are routed from port 80 to port 8080
 app.listen(port, function () {
