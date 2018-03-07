@@ -23,15 +23,7 @@ app.get('/', function(req, res) {
      res.render('index'); 
 })
 
-app.get('/recycling', function(req, res){
-    res.render('recycling');
-})
-
-app.get('/return', function(req, res){
-    res.render('return');
-})
-
-app.get('/product', function (req, res) {
+app.get('/inventory', function (req, res) {
     var productList = [];
     db.query('select * from Product', function (error, results, fields) {
         if (error) {
@@ -55,45 +47,61 @@ app.get('/product', function (req, res) {
     });
 });
 
-app.get('/product/:serial', function (req, res) {
-    var serial = req.params.serial;
-    
-    if (!serial) {
-        return res.status(400).send({ error: true, message: 'Please provide Serial' });
-    }
-    
-    db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
-        if (error) {
-            return res.status(400).send({ error: true, message: 'db error' });
-        }
-        else {
-            if (results.length == 1) {
-                var product = {
-                    'Serial':results[0].Serial,
-                    'Model':results[0].Model,
-                    'CurLocation':results[0].CurLocation
-                }
-            res.render('productSerial', {"product": product});
-            }
-            else {
-                return res.status(400).send({ error: true, message: 'not found' });
-            }
-            
-            // return res.send(results[0]);
-        }
-    });
-});
-
-app.get('/exchange', function(req, res) {
-     res.render('exchange'); 
+app.get('/current', function(req, res){
+    res.render('current');
 })
 
-app.get('/shipment', function (req, res) {
+app.get('/return', function(req, res){
+    res.render('return');
+})
+
+app.get('/exchange', function(req, res){
+    res.render('exchange');
+})
+
+app.get('/recycling', function(req, res){
+    res.render('recycling');
+})
+
+app.get('/support', function(req, res){
+    res.render('support');
+})
+
+// app.get('/product/:serial', function (req, res) {
+//     var serial = req.params.serial;
+    
+//     if (!serial) {
+//         return res.status(400).send({ error: true, message: 'Please provide Serial' });
+//     }
+    
+//     db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
+//         if (error) {
+//             return res.status(400).send({ error: true, message: 'db error' });
+//         }
+//         else {
+//             if (results.length == 1) {
+//                 var product = {
+//                     'Serial':results[0].Serial,
+//                     'Model':results[0].Model,
+//                     'CurLocation':results[0].CurLocation
+//                 }
+//             res.render('productSerial', {"product": product});
+//             }
+//             else {
+//                 return res.status(400).send({ error: true, message: 'not found' });
+//             }
+            
+//             // return res.send(results[0]);
+//         }
+//     });
+// });
+
+/*app.get('/shipment', function (req, res) {
     db.query('select * from Shipment', function (error, results, fields) {
         if (error) throw error;
         return res.send(results);
     });
-});
+});*/
 
 
 // port must be set to 8080 because incoming http requests are routed from port 80 to port 8080
