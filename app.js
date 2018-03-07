@@ -17,13 +17,15 @@ app.set('view engine', 'pug');
 
 db.connect();
 
+var router = express.Router();
+
 app.use(express.static('views'));
 // default route
-app.get('/', function(req, res) {
-     res.render('index'); 
-})
+router.get('/', function(req, res) {
+    return res.render('index');
+});
 
-app.get('/inventory', function (req, res) {
+router.get('/inventory', function (req, res) {
     var productList = [];
     db.query('select * from Product', function (error, results, fields) {
         if (error) {
@@ -31,7 +33,6 @@ app.get('/inventory', function (req, res) {
         }
         else {
             for (var i = 0; i < results.length; i++) {
-
                 // Create an object to save current row's data
                 var product = {
                     'Serial':results[i].Serial,
@@ -41,31 +42,60 @@ app.get('/inventory', function (req, res) {
                 // Add object into array
                 productList.push(product);
             }
-        res.render('productIndex', {"productList": productList}); 
+        return res.render('productIndex', {"productList": productList}); 
         }
         // return res.send(results);
     });
 });
 
-app.get('/current', function(req, res){
-    res.render('current');
-})
 
-app.get('/return', function(req, res){
-    res.render('return');
-})
+router.get('/inventory/serial', function (req, res) {
+    var serial = req.query.serial;
+     if (!serial) {
+        return res.redirect("/inventory");
+    }
+    
+    db.query('SELECT * FROM Product where serial=?', serial, function (error, results, fields) {
+        if (error) {
+            return res.status(400).send({ error: true, message: 'db error' });
+        }
+        else {
+            if (results.length == 1) {
+                var product = {
+                    'Serial':results[0].Serial,
+                    'Model':results[0].Model,
+                    'CurLocation':results[0].CurLocation
+                }
+            return res.render('productSerial', {"product": product});
+            }
+            else {
+                return res.status(400).send({ error: true, message: 'not found' });
+            }
+            
+            // return res.send(results[0]);
+        }
+    });
+});
 
-app.get('/exchange', function(req, res){
-    res.render('exchange');
-})
+router.get('/current', function(req, res){
+    return res.render('current');
+});
 
-app.get('/recycling', function(req, res){
-    res.render('recycling');
-})
+router.get('/return', function(req, res){
+    return res.render('return');
+});
 
-app.get('/support', function(req, res){
-    res.render('support');
-})
+router.get('/exchange', function(req, res){
+    return res.render('exchange');
+});
+
+router.get('/recycling', function(req, res){
+    return res.render('recycling');
+});
+
+router.get('/support', function(req, res){
+    return res.render('support');
+});
 
 app.get('/query', function (req, res) {
     db.query('select * from Product', function (error, results, fields) {
@@ -105,13 +135,14 @@ app.get('/query', function (req, res) {
 //     });
 // });
 
-/*app.get('/shipment', function (req, res) {
+router.get('/shipment', function (req, res) {
     db.query('select * from Shipment', function (error, results, fields) {
         if (error) throw error;
         return res.send(results);
     });
-});*/
+});
 
+app.use('/', router);
 
 // port must be set to 8080 because incoming http requests are routed from port 80 to port 8080
 app.listen(port, function () {
