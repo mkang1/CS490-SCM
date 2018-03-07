@@ -17,21 +17,26 @@ app.set('view engine', 'pug');
 
 db.connect();
 
+var router = express.Router();
+
 app.use(express.static('views'));
 // default route
-app.get('/', function(req, res) {
+router.get('/', function(req, res) {
     res.sendFile('views/index.html' , { root : __dirname});
 });
 
-app.get('/product', function (req, res) {
+router.get('/inventory.html', function (req, res) {
     var productList = [];
+    var test = req.query.serial;
+    if (typeof test !== 'undefined') {
+        res.redirect("/inventory.html/" + test);
+    }
     db.query('select * from Product', function (error, results, fields) {
         if (error) {
             return res.status(400).send({ error: true, message: 'db error' });
         }
         else {
             for (var i = 0; i < results.length; i++) {
-
                 // Create an object to save current row's data
                 var product = {
                     'Serial':results[i].Serial,
@@ -47,7 +52,7 @@ app.get('/product', function (req, res) {
     });
 });
 
-app.get('/product/:serial', function (req, res) {
+router.get('/inventory.html/:serial', function (req, res) {
     var serial = req.params.serial;
     
     if (!serial) {
@@ -76,13 +81,14 @@ app.get('/product/:serial', function (req, res) {
     });
 });
 
-app.get('/shipment', function (req, res) {
+router.get('/shipment', function (req, res) {
     db.query('select * from Shipment', function (error, results, fields) {
         if (error) throw error;
         return res.send(results);
     });
 });
 
+app.use('/', router);
 
 // port must be set to 8080 because incoming http requests are routed from port 80 to port 8080
 app.listen(port, function () {
