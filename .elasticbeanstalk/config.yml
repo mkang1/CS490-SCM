@@ -1,16 +1,18 @@
 branch-defaults:
   master:
-    environment: node-express-env2
+    environment: downstreamScm-env
 environment-defaults:
+  downstreamScm-env:
+    branch: null
+    repository: null
   node-express-env2:
     branch: null
     repository: null
 global:
-  application_name: node-express
+  application_name: Downstream SCM
   default_ec2_keyname: aws-eb
-  default_platform: arn:aws:elasticbeanstalk:us-west-2::platform/Node.js running on
-    64bit Amazon Linux/4.4.5
-  default_region: us-west-2
+  default_platform: Node.js
+  default_region: us-east-2
   include_git_submodules: true
   instance_profile: null
   platform_name: null

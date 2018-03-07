@@ -1,9 +1,24 @@
 {
-  "name": "Elastic-Beanstalk-Sample-App",
+  "name": "cs490-scm",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.16.2",
+    "mysql": "^2.15.0"
+  },
   "scripts": {
     "start": "node app.js"
-  }
+  },
+  "description": "Downstream SCM",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkang1/CS490-SCM.git"
+  },
+  "author": "cs490-group10",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mkang1/CS490-SCM/issues"
+  },
+  "homepage": "https://github.com/mkang1/CS490-SCM#readme"
 }
