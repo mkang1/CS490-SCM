@@ -1,0 +1,60 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+        meta(name="description" content="Supply Chain Management Downstream system")
+        meta(name="author" content="Group 10")
+        block title
+        style
+            include style.css
+        // Bootstrap core CSS
+        link(href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
+        // Custom styles for this template
+        link(href="css/simple-sidebar.css" rel="stylesheet")
+    body
+        #wrapper
+            // Sidebar
+            #sidebar-wrapper
+                ul.sidebar-nav
+                    li.sidebar-brand
+                        a(href="#")
+                            | Activities:
+                    li
+                        a(href="/") Home
+                    li
+                        a(href="inventory") Inventory
+                    li
+                        a(href="current") Current Orders
+                    li
+                        a(href="return") Returns
+                    li
+                        a(href="exchange") Exchanges
+                    li
+                        a(href="recycling") Recycling
+                    li
+                        a(href="support") Support
+            // /#sidebar-wrapper
+            // Page Content
+            #page-content-wrapper
+            .container
+                .row
+                    .col-sm-1
+                        a#menu-toggle.btn(href="#menu-toggle") &#9776
+                    .col-sm-10
+                    h1 Supply Chain Management
+                    .col-sm-5
+                    block content
+            // /#page-content-wrapper
+        // /#wrapper
+        // Bootstrap core JavaScript
+        script(src="vendor/jquery/jquery.min.js")
+        script(src="vendor/bootstrap/js/bootstrap.bundle.min.js")
+        // Menu Toggle Script
+        script.
+            $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+            });
+        script(src="jquery-3.3.1.min.js")
+        script(src="main.js")
