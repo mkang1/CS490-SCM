@@ -3,10 +3,10 @@ block title
 	title= 'Product List'
 block content
 	h2= 'Product List'
-	table
-		td= "Serial"
-		td= "Model"
-		td= "Current Location"
+	table#desc4
+		th#desc3= "Serial"
+		th#desc3= "Model"
+		th#desc3= "Current Location"
 		for product in productList
 			tr
 				td= product.Serial

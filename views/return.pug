@@ -2,10 +2,10 @@ extend layout.pug
 block title 
 	title="Returns"
 block content
-	table
-		td= "Return ID"
-		td= "Serial"
-		td= "Return Location"
+	table#desc4
+		th#desc3= "Return ID"
+		th#desc3= "Serial"
+		th#desc3= "Return Location"
 		for product in returnList
 			tr
 				td= product.ReturnID

@@ -65,6 +65,20 @@ body {
   
 }
 
+#desc3 {
+  width: 40em; //Change to make the table the size we want
+  border-collapse: collapse;
+  padding: 1em;
+  background-color: lightgrey;
+  text-align: center;
+}
+
+#desc4 {
+  width: 40em; //Change to make the table the size we want
+  border-collapse: collapse; 
+  text-align: center;  
+}
+
 
 /* Sidebar Styles */
 
