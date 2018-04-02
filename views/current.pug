@@ -13,7 +13,10 @@ block content
 		td= "Completed"
 		for product in currentList
 			tr
-				td= product.Batch
+				td
+					form(action="/current/batch" method="get")
+						input(type="hidden" name="batch" value=product.Batch)
+						input(type="submit" value=product.Batch)
 				td= product.Serial
 				td= product.From
 				td= product.To
