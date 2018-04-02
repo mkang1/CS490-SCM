@@ -50,6 +50,21 @@ body {
   margin-right: -250px;
 }
 
+#desc {
+  width: 85em; //Change to make the table the size we want
+  border-collapse: collapse; 
+  text-align: center;  
+}
+
+#desc2 {
+  width: 85em; //Change to make the table the size we want
+  border-collapse: collapse;
+  padding: 1em;
+  background-color: lightgrey;
+  text-align: center;
+  
+}
+
 
 /* Sidebar Styles */
 

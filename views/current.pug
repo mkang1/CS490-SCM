@@ -2,15 +2,18 @@ extends layout.pug
 block title
 	title= 'Outgoing shipments'
 block content
+	br
+	br
 	h2= 'Shipments'
-	table
-		td= "Batch"
-		td= "Serial"
-		td= "From"
-		td= "To"
-		td= "ReceiveDt"
-		td= "ShipDt"
-		td= "Completed"
+	br
+	table#desc 
+		th#desc2= "Batch" 
+		th#desc2= "Serial"
+		th#desc2= "From"
+		th#desc2= "To"
+		th#desc2= "Receive Date"
+		th#desc2= "Ship Date"
+		th#desc2= "Completed"
 		for product in currentList
 			tr
 				td
