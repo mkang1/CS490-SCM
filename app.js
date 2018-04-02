@@ -7,6 +7,9 @@ var port = process.env.PORT || 3000,
     app = express(),
     db=require('./dbconnect');
 
+const https = require("https");
+const url = 
+    "https://cs490-w18-eai9.herokuapp.com/objects?key=20080918200505149505090708200505144219092420050514&requestObject=Finished%20Goods%20Inventory";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -203,6 +206,9 @@ router.get('/current', function(req, res){
     });
 });
 
+router.get('/current/script', function(req, res) {
+    connected_to_prod();
+});
 
 router.get('/current/batch', function (req, res) {
     var currentList = [];
@@ -312,6 +318,50 @@ app.listen(port, function () {
     console.log('Node app is running on port 3000');
 });
 
+function connected_to_prod() {
+    https.get(url, res => {
+        res.setEncoding("utf8");
+        let body = "";
+        res.on("data", data => {
+          body += data;
+        });
+        res.on("end", () => {
+            body = JSON.parse(body);
+            var total = 0;
+            // check out the number of product we have in the factory
+            for (var sku in body){
+                total += body[sku]["quantityOnHand"];
+            }
+
+            if (total >= 20) {
+                // send trucks!
+                var values = [];
+                // determines number of trucks we send out
+                for (var i = 0; i < Math.floor(total/20); i++) { 
+                    // add 20 new orders to the shipment table for each batch
+                    for (var k = 0; k < 20; k++) {
+                        // we start at batch 20, arbitrarily, because I don't want to make this work
+                        // we start at serial 20, then just increment by k
+                        var new_shipment = [(i+1) + 20, (i+1)*20 + k, "Factory in Colorado", "Distribution Center in Colorado", "2018-04-04", "2018-04-05"]
+                        values.push(new_shipment);
+                    }
+                }
+                // db.connect();
+                var sql = 'INSERT INTO Shipment (Batch, Serial, `From`, `To`, ReceiveDt, ShipDt) VALUES ?'
+                 
+                db.query(sql, [values], function (err, result) {
+                    if (err) throw err;
+                });
+                //  
+                // console.log(values);
+
+                // db.end();
+            }
+            console.log("Sent " + Math.floor(total/20) + " trucks for " + Math.floor(total/20)*20 + " bikes");
+            // alert("Sent " + Math.floor(total/20) + " trucks for " + Math.floor(total/20)*20 + " bikes");        
+        });
+    })
+};
 
 // var log = function(entry) {
 //     fs.appendFileSync('/tmp/sample-app.log', new Date().toISOString() + ' - ' + entry + '\n');

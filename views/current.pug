@@ -28,8 +28,5 @@ block content
 		| Batch search: 
 		input(type="text" name="batch")
 		input(type="submit" value="Submit")
-	input(type='button', value='Run Script', onclick='runscript()')
-	script.
-		function runscript() {
-			console.log('test');
-		}
+	form(action="current/script" method="get")
+		input(type="submit" value="Run Script")
