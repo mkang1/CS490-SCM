@@ -28,5 +28,5 @@ block content
 		| Batch search: 
 		input(type="text" name="batch")
 		input(type="submit" value="Submit")
-	script(src="../script.js").
-	input(type='button', value='Run Script', onclick='connected_to_prod()')
+	form(action="current/script" method="get")
+		input(type="submit" value="Run Script")
