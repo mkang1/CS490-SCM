@@ -178,7 +178,7 @@ router.get('/inventory/serial', function (req, res) {
 
 router.get('/current', function(req, res){
     var currentList = [];
-    db.query('select * from Shipment', function (error, results, fields) {
+    db.query('select * from Shipment Group By(batch)', function (error, results, fields) {
         if (error) {
             return res.status(400).send({ error: true, message: 'db error' });
         }
