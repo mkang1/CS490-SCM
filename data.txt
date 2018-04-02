@@ -1,0 +1,25 @@
+data = '[{
+"0000000250": 
+	{
+	"skuName": "Enduro 250", 
+	"quantityInProduction": 0, 
+	"quantityOnHand": 150},
+	
+"0000000550": 
+	{
+	"skuName": "Enduro 550", 
+	"quantityInProduction": 10, 
+	"quantityOnHand": 150}, 
+
+"0000000300": 
+	{
+	"skuName": "Moto 300", 
+	"quantityInProduction": 6, 
+	"quantityOnHand": 150}, 
+	
+"0000000450": 
+	{
+	"skuName": "Moto 450",
+	"quantityInProduction": 4, 
+	"quantityOnHand": 150}
+}]'
